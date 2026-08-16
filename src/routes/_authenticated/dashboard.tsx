@@ -5,6 +5,7 @@ import { CountryTag } from "@/components/app/brand";
 import { Countdown, EmptyState, PageHeader, ProgressBar, StatCard } from "@/components/app/ui-bits";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Row } from "@/lib/queries";
 import { useMembers, useMyProfile, useProjects, useSections, useTasks, useWorkPackages } from "@/lib/queries";
 import { proposalProgress } from "@/lib/scoring";
 
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
 
-function ProjectSummary({ project }: { project: Record<string, any> }) {
+function ProjectSummary({ project }: { project: Row }) {
   const { data: members = [] } = useMembers(project.id);
   const { data: wps = [] } = useWorkPackages(project.id);
   const { data: tasks = [] } = useTasks(project.id);

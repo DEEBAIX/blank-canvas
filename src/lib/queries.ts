@@ -7,7 +7,9 @@ async function unwrap<T>(p: PromiseLike<{ data: T | null; error: { message: stri
   return (data ?? []) as T;
 }
 
-export type Row = Record<string, any>;
+// Loose row type: Supabase joins produce dynamic shapes across the workspace.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Row = any;
 
 export function useMyRoles() {
   return useQuery({

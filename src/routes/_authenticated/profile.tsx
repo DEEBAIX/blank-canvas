@@ -45,7 +45,10 @@ function ProfilePage() {
     setSaving(true);
     const { error } = await supabase.from("profiles").update(form).eq("id", profile.id);
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Profile updated");
     queryClient.invalidateQueries({ queryKey: ["my-profile"] });
   }
