@@ -54,7 +54,9 @@ export const requestAccessLink = createServerFn({ method: "POST" })
 
     const { error } = await client.auth.signInWithOtp({
       email,
-      options: { shouldCreateUser: true, emailRedirectTo: origin || undefined },
+      options: origin
+        ? { shouldCreateUser: true, emailRedirectTo: origin }
+        : { shouldCreateUser: true },
     });
     if (error) {
       console.error("[access] magic link failed", error.message);

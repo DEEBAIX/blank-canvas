@@ -19,7 +19,7 @@ export function BudgetPanel({ projectId }: { projectId: string }) {
   const removeLine = useRemove("budget_lines", ["budget_lines"]);
 
   const orgs = Array.from(new Map(members.filter((m) => m.organizations).map((m) => [m.org_id, m.organizations])).entries());
-  const [form, setForm] = useState({ category: CATEGORIES[0], org_id: "", wp_id: "", amount: "", description: "" });
+  const [form, setForm] = useState({ category: "Personnel", org_id: "", wp_id: "", amount: "", description: "" });
 
   const total = lines.reduce((s, l) => s + Number(l.amount ?? 0), 0);
   const target = Number(project?.total_budget ?? 0);

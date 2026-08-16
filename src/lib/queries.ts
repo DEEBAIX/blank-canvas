@@ -118,7 +118,7 @@ function listHook(table: string, order: { column: string; ascending?: boolean },
       queryKey: [table, projectId],
       queryFn: () =>
         unwrap<Row[]>(
-          supabase
+          db
             .from(table)
             .select(select)
             .eq("project_id", projectId)

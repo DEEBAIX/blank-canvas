@@ -43,7 +43,10 @@ export function IdeasPanel({ projectId }: { projectId: string }) {
       ? supabase.from("idea_votes").delete().eq("idea_id", ideaId).eq("user_id", userId)
       : supabase.from("idea_votes").insert({ idea_id: ideaId, user_id: userId });
     const { error } = await query;
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     queryClient.invalidateQueries({ queryKey: ["ideas", projectId] });
   }
 

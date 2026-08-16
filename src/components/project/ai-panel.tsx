@@ -31,7 +31,8 @@ export function AiPanel({ projectId }: { projectId: string }) {
   const [draft, setDraft] = useState({ title: "", instructions: "", output: "" });
   const [busy, setBusy] = useState<string | null>(null);
 
-  const latest = evaluations[0]?.scores as Record<string, any> | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const latest: any = evaluations[0]?.scores;
 
   return (
     <div className="grid gap-6">
