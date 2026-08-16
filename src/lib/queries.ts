@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+// Dynamic table/column access across many tables; the generated types are too
+// narrow for these generic helpers.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db: any = supabase;
+
 async function unwrap<T>(p: PromiseLike<{ data: T | null; error: { message: string } | null }>) {
   const { data, error } = await p;
   if (error) throw new Error(error.message);
@@ -18,7 +23,7 @@ export function useMyRoles() {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth.user) return [] as string[];
       const rows = await unwrap<Row[]>(
-        supabase.from("user_roles").select("role").eq("user_id", auth.user.id),
+        db.from("user_roles").select("role").eq("user_id", auth.user.id),
       );
       return rows.map((r) => r.role as string);
     },
@@ -103,7 +108,7 @@ export function useMyMembership(projectId: string) {
 export function useOrganizations() {
   return useQuery({
     queryKey: ["organizations"],
-    queryFn: () => unwrap<Row[]>(supabase.from("organizations").select("*").order("name")),
+    queryFn: () => unwrap<Row[]>(db.from("organizations").select("*").order("name")),
   });
 }
 
@@ -136,7 +141,7 @@ export function useUpsert(table: string, invalidate: string[]) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (values: Row) => {
-      const { data, error } = await supabase.from(table).upsert(values).select().maybeSingle();
+      const { data, error } = await db.from(table).upsert(values).select().maybeSingle();
       if (error) throw new Error(error.message);
       return data as Row;
     },
@@ -148,7 +153,7 @@ export function useInsert(table: string, invalidate: string[]) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (values: Row) => {
-      const { data, error } = await supabase.from(table).insert(values).select().maybeSingle();
+      const { data, error } = await db.from(table).insert(values).select().maybeSingle();
       if (error) throw new Error(error.message);
       return data as Row;
     },
@@ -160,7 +165,7 @@ export function useUpdate(table: string, invalidate: string[]) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, values }: { id: string; values: Row }) => {
-      const { error } = await supabase.from(table).update(values).eq("id", id);
+      const { error } = await db.from(table).update(values).eq("id", id);
       if (error) throw new Error(error.message);
     },
     onSuccess: () => invalidate.forEach((key) => qc.invalidateQueries({ queryKey: [key] })),
@@ -171,7 +176,7 @@ export function useRemove(table: string, invalidate: string[]) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from(table).delete().eq("id", id);
+      const { error } = await db.from(table).delete().eq("id", id);
       if (error) throw new Error(error.message);
     },
     onSuccess: () => invalidate.forEach((key) => qc.invalidateQueries({ queryKey: [key] })),

@@ -15,7 +15,7 @@ export function LibraryPanel({ projectId }: { projectId: string }) {
   const { data: documents = [] } = useDocuments(projectId);
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [category, setCategory] = useState<string>("Call documents");
   const [busy, setBusy] = useState(false);
 
   async function upload(file: File) {
@@ -25,7 +25,8 @@ export function LibraryPanel({ projectId }: { projectId: string }) {
     const { error } = await supabase.storage.from("project-documents").upload(path, file);
     if (error) {
       setBusy(false);
-      return toast.error(error.message);
+      toast.error(error.message);
+      return;
     }
     const { error: dbError } = await supabase.from("documents").insert({
       project_id: projectId,
@@ -37,14 +38,20 @@ export function LibraryPanel({ projectId }: { projectId: string }) {
       uploaded_by: auth.user?.id ?? null,
     });
     setBusy(false);
-    if (dbError) return toast.error(dbError.message);
+    if (dbError) {
+      toast.error(dbError.message);
+      return;
+    }
     toast.success("Document uploaded");
     queryClient.invalidateQueries({ queryKey: ["documents", projectId] });
   }
 
   async function download(path: string) {
     const { data, error } = await supabase.storage.from("project-documents").createSignedUrl(path, 60);
-    if (error || !data) return toast.error(error?.message ?? "Could not open file");
+    if (error || !data) {
+      toast.error(error?.message ?? "Could not open file");
+      return;
+    }
     window.open(data.signedUrl, "_blank", "noopener");
   }
 
