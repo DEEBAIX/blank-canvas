@@ -1,16 +1,19 @@
 // Repository source snapshot, embedded at build time (read-only).
+// The generated route tree is transformed by the router plugin and cannot be
+// imported as raw text, so it is excluded.
 const modules = {
-  ...import.meta.glob("/src/**/*.{ts,tsx,css,json,md}", {
-    query: "?raw",
-    import: "default",
-    eager: true,
-  }),
+  ...import.meta.glob(
+    ["/src/**/*.{ts,tsx,css,json,md}", "!/src/routeTree.gen.ts"],
+    { query: "?raw", import: "default", eager: true },
+  ),
   ...import.meta.glob("/*.{ts,tsx,json,md,js}", {
     query: "?raw",
     import: "default",
     eager: true,
   }),
 } as Record<string, string>;
+
+
 
 export type RepoFile = {
   path: string;
