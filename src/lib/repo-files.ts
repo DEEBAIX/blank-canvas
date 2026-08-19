@@ -4,6 +4,7 @@ const modules = {
     query: "?raw",
     import: "default",
     eager: true,
+    exhaustive: false,
   }),
   ...import.meta.glob("/*.{ts,tsx,json,md,js}", {
     query: "?raw",
@@ -11,6 +12,11 @@ const modules = {
     eager: true,
   }),
 } as Record<string, string>;
+
+// The generated route tree is transformed by the router plugin and cannot be
+// imported as raw text.
+delete (modules as Record<string, unknown>)["/src/routeTree.gen.ts"];
+
 
 export type RepoFile = {
   path: string;
