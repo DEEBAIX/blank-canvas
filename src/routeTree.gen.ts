@@ -10,144 +10,33 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedOrganizationsRouteImport } from './routes/_authenticated/organizations'
-import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
-import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects.index'
-import { Route as AuthenticatedProjectsProjectIdRouteImport } from './routes/_authenticated/projects.$projectId'
-import { Route as AuthenticatedProjectsProjectIdIndexRouteImport } from './routes/_authenticated/projects.$projectId.index'
-import { Route as AuthenticatedProjectsProjectIdTabRouteImport } from './routes/_authenticated/projects.$projectId.$tab'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedOrganizationsRoute =
-  AuthenticatedOrganizationsRouteImport.update({
-    id: '/organizations',
-    path: '/organizations',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedProjectsIndexRoute =
-  AuthenticatedProjectsIndexRouteImport.update({
-    id: '/projects/',
-    path: '/projects/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedProjectsProjectIdRoute =
-  AuthenticatedProjectsProjectIdRouteImport.update({
-    id: '/projects/$projectId',
-    path: '/projects/$projectId',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedProjectsProjectIdIndexRoute =
-  AuthenticatedProjectsProjectIdIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedProjectsProjectIdRoute,
-  } as any)
-const AuthenticatedProjectsProjectIdTabRoute =
-  AuthenticatedProjectsProjectIdTabRouteImport.update({
-    id: '/$tab',
-    path: '/$tab',
-    getParentRoute: () => AuthenticatedProjectsProjectIdRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AuthenticatedAdminRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
-  '/organizations': typeof AuthenticatedOrganizationsRoute
-  '/profile': typeof AuthenticatedProfileRoute
-  '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRouteWithChildren
-  '/projects/': typeof AuthenticatedProjectsIndexRoute
-  '/projects/$projectId/$tab': typeof AuthenticatedProjectsProjectIdTabRoute
-  '/projects/$projectId/': typeof AuthenticatedProjectsProjectIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AuthenticatedAdminRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
-  '/organizations': typeof AuthenticatedOrganizationsRoute
-  '/profile': typeof AuthenticatedProfileRoute
-  '/projects': typeof AuthenticatedProjectsIndexRoute
-  '/projects/$projectId/$tab': typeof AuthenticatedProjectsProjectIdTabRoute
-  '/projects/$projectId': typeof AuthenticatedProjectsProjectIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/organizations': typeof AuthenticatedOrganizationsRoute
-  '/_authenticated/profile': typeof AuthenticatedProfileRoute
-  '/_authenticated/projects/$projectId': typeof AuthenticatedProjectsProjectIdRouteWithChildren
-  '/_authenticated/projects/': typeof AuthenticatedProjectsIndexRoute
-  '/_authenticated/projects/$projectId/$tab': typeof AuthenticatedProjectsProjectIdTabRoute
-  '/_authenticated/projects/$projectId/': typeof AuthenticatedProjectsProjectIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/admin'
-    | '/dashboard'
-    | '/organizations'
-    | '/profile'
-    | '/projects/$projectId'
-    | '/projects/'
-    | '/projects/$projectId/$tab'
-    | '/projects/$projectId/'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/admin'
-    | '/dashboard'
-    | '/organizations'
-    | '/profile'
-    | '/projects'
-    | '/projects/$projectId/$tab'
-    | '/projects/$projectId'
-  id:
-    | '__root__'
-    | '/'
-    | '/_authenticated'
-    | '/_authenticated/admin'
-    | '/_authenticated/dashboard'
-    | '/_authenticated/organizations'
-    | '/_authenticated/profile'
-    | '/_authenticated/projects/$projectId'
-    | '/_authenticated/projects/'
-    | '/_authenticated/projects/$projectId/$tab'
-    | '/_authenticated/projects/$projectId/'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -159,115 +48,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/organizations': {
-      id: '/_authenticated/organizations'
-      path: '/organizations'
-      fullPath: '/organizations'
-      preLoaderRoute: typeof AuthenticatedOrganizationsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/projects/': {
-      id: '/_authenticated/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/projects/$projectId': {
-      id: '/_authenticated/projects/$projectId'
-      path: '/projects/$projectId'
-      fullPath: '/projects/$projectId'
-      preLoaderRoute: typeof AuthenticatedProjectsProjectIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/projects/$projectId/': {
-      id: '/_authenticated/projects/$projectId/'
-      path: '/'
-      fullPath: '/projects/$projectId/'
-      preLoaderRoute: typeof AuthenticatedProjectsProjectIdIndexRouteImport
-      parentRoute: typeof AuthenticatedProjectsProjectIdRoute
-    }
-    '/_authenticated/projects/$projectId/$tab': {
-      id: '/_authenticated/projects/$projectId/$tab'
-      path: '/$tab'
-      fullPath: '/projects/$projectId/$tab'
-      preLoaderRoute: typeof AuthenticatedProjectsProjectIdTabRouteImport
-      parentRoute: typeof AuthenticatedProjectsProjectIdRoute
-    }
   }
 }
-
-interface AuthenticatedProjectsProjectIdRouteChildren {
-  AuthenticatedProjectsProjectIdTabRoute: typeof AuthenticatedProjectsProjectIdTabRoute
-  AuthenticatedProjectsProjectIdIndexRoute: typeof AuthenticatedProjectsProjectIdIndexRoute
-}
-
-const AuthenticatedProjectsProjectIdRouteChildren: AuthenticatedProjectsProjectIdRouteChildren =
-  {
-    AuthenticatedProjectsProjectIdTabRoute:
-      AuthenticatedProjectsProjectIdTabRoute,
-    AuthenticatedProjectsProjectIdIndexRoute:
-      AuthenticatedProjectsProjectIdIndexRoute,
-  }
-
-const AuthenticatedProjectsProjectIdRouteWithChildren =
-  AuthenticatedProjectsProjectIdRoute._addFileChildren(
-    AuthenticatedProjectsProjectIdRouteChildren,
-  )
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedOrganizationsRoute: typeof AuthenticatedOrganizationsRoute
-  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
-  AuthenticatedProjectsProjectIdRoute: typeof AuthenticatedProjectsProjectIdRouteWithChildren
-  AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedOrganizationsRoute: AuthenticatedOrganizationsRoute,
-  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
-  AuthenticatedProjectsProjectIdRoute:
-    AuthenticatedProjectsProjectIdRouteWithChildren,
-  AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
-}
-
-const AuthenticatedRouteRouteWithChildren =
-  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
